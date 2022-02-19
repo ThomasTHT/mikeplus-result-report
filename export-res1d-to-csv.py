@@ -34,7 +34,7 @@ print(mikeio1d.__file__)
 
 # # Function definition
 
-# In[1]:
+# In[3]:
 
 
 print('Function definition...')
@@ -42,7 +42,7 @@ print('Function definition...')
 
 # -----
 
-# In[3]:
+# In[4]:
 
 
 def get_qfull_data(res1d):
@@ -200,7 +200,7 @@ def q_max_q_full_ratio_data (q_minmax_data,qfull):
     return qmax_qfull_ratio
 
 
-# In[4]:
+# In[5]:
 
 
 def get_reach_type(reach):
@@ -238,7 +238,13 @@ def get_reach_type(reach):
 
 # # Find res1d and sqlite files
 
-# In[5]:
+# In[6]:
+
+
+print('Searching res1d and sqlite files...')
+
+
+# In[7]:
 
 
 cwd = os.getcwd()
@@ -246,13 +252,13 @@ cwd = os.getcwd()
 cwd
 
 
-# In[6]:
+# In[8]:
 
 
 myFiles = os.listdir(cwd)
 
 
-# In[7]:
+# In[9]:
 
 
 # create a list of res1d-files
@@ -264,7 +270,7 @@ oneRes1dFile = myRes1dFiles[0]
 oneRes1dFile
 
 
-# In[8]:
+# In[10]:
 
 
 # create a list of sqlite-files
@@ -277,19 +283,19 @@ oneSQLiteFile = mySQLiteFiles[0]
 oneSQLiteFile
 
 
-# In[9]:
+# In[11]:
 
 
 altres1d = Res1D(oneRes1dFile)
 
 
-# In[10]:
+# In[12]:
 
 
 altres1d
 
 
-# In[11]:
+# In[13]:
 
 
 #df = altres1d.read()
@@ -297,7 +303,13 @@ altres1d
 
 # # Create nodes and reaches lists from res1d
 
-# In[12]:
+# In[14]:
+
+
+print('Creating nodes and links lists from res1d...')
+
+
+# In[15]:
 
 
 # create a Res1d-object
@@ -312,20 +324,20 @@ times_list  = list(res1d.data.TimesList)
 simulation_start = res1d.data.StartTime
 
 
-# In[13]:
+# In[16]:
 
 
 nodes
 
 
-# In[14]:
+# In[17]:
 
 
 myNode = nodes[-1]
 myNode.ID
 
 
-# In[15]:
+# In[18]:
 
 
 # The list "nodes" contains special nodes at the end of weirs without defined end. 
@@ -344,7 +356,13 @@ myNode.ID
 
 # # Prepare desired node results
 
-# In[36]:
+# In[19]:
+
+
+print('Preparing desired node results...')
+
+
+# In[20]:
 
 
 # initialize node lists
@@ -370,7 +388,7 @@ for node in nodes:
     
 
 
-# In[17]:
+# In[21]:
 
 
 # create dictionary with lists
@@ -386,7 +404,13 @@ df_res1dNode
 
 # # Prepare desired Link results
 
-# In[18]:
+# In[22]:
+
+
+print('Preparing desired link results...')
+
+
+# In[23]:
 
 
 #initialize lists
@@ -398,9 +422,11 @@ Ground_level_from_Node=[]
 To_Node_ID=[]
 Invert_level_to_Node=[]
 Ground_level_to_Node=[]
-Diameter=[]
 Length=[]
+Diameter=[]
 Slope=[]
+Qfull=[]
+
 Vmin=[]
 t_Vmin=[]
 Vmax=[]
@@ -409,7 +435,7 @@ Qmin=[]
 t_Qmin=[]
 Qmax=[]
 t_Qmax=[]
-Qfull=[]
+
 Qmax_Qfull=[]
 WLmax_start=[]
 WLmax_start_time=[]
@@ -477,93 +503,92 @@ for reach in reaches:
 
 #convert lists into list of lists and further into a dataframe    
 
-# ASFA Liste deaktivieren
-list_res1d_prop=[Link_ID,Reach_Type,From_Node_ID,Invert_level_from_Node,
-                   Ground_level_from_Node,To_Node_ID,
-                   Invert_level_to_Node,Ground_level_to_Node,
-                   Diameter,Length,Slope,Vmin,t_Vmin,Vmax,t_Vmax,Qmin,t_Qmin,Qmax,t_Qmax,Qfull,Qmax_Qfull,WLmax_start,WLmax_start_time,WLmax_end,WLmax_end_time]
+
+# list_res1d_prop=[Link_ID,Reach_Type,From_Node_ID,Invert_level_from_Node,
+#                    Ground_level_from_Node,To_Node_ID,
+#                    Invert_level_to_Node,Ground_level_to_Node,
+#                    Diameter,Length,Slope,Vmin,t_Vmin,Vmax,t_Vmax,Qmin,t_Qmin,Qmax,t_Qmax,Qfull,Qmax_Qfull,WLmax_start,WLmax_start_time,WLmax_end,WLmax_end_time]
+
+dict_res1d_prop = {'Link_ID':Link_ID, 'Reach_Type':Reach_Type, 'From_Node_ID':From_Node_ID,'Invert_level_from_Node':Invert_level_from_Node, 
+                   'Ground_level_from_Node':Ground_level_from_Node,'To_Node_ID':To_Node_ID, 'Invert_level_to_Node': Invert_level_to_Node,
+                   'Ground_level_to_Node':Ground_level_to_Node, 'Diameter': Diameter,'Length':Length, 'Slope':Slope,'Vmin':Vmin, 
+                   't_Vmin':t_Vmin,'V,ax':Vmax, 't_Vmax':t_Vmax, 'Qmin':Qmin, 't_Qmin':t_Qmin,'Qmax':Qmax, 't_Qmax':t_Qmax,
+                   'Qfull':Qfull,'Qmax_Qfull':Qmax_Qfull, 'WLmax_start':WLmax_start, 'WLmax_start_time':WLmax_start_time, 'WLmax_end':WLmax_end,
+                   'WLmax_end_time':WLmax_end_time}
 
 
-# ASFA: schreibe dictionary
-# dict_res1d_prop = {'Link_ID':Link_ID, 'Reach_Type':Reach_Type, etc. etc.}
-
-
-# ASFA: erstetze list_ durch dict_
-df=pd.DataFrame(list_res1d_prop).transpose()
+df_res1dLink=pd.DataFrame(dict_res1d_prop)
 
 # define column names of final dataframe    
-df.columns=['Haltungs-Nr.','Haltungstyp','Schacht oben','Sohlhöhe_Schacht oben',
-                'Deckenhöhe_Schacht oben','Schacht unten','Sohlhöhe_Schacht unten',
-                'Deckenhöhe_Schacht unten','Durchmesser [m]','Länge [m]','Gefälle [%]',
-                'Vmin [m/s]','Vmin_Zeitpunkt','Vmax [m/s]','Vmax_Zeitpunkt','Qmin [m/s]',
-                'Qmin_Zeitpunkt','Qmax [m/s]','Qmax_Zeitpunkt','Qvoll [m³/s]','Qmax/Qvoll [%]',
-                'Wspmax Schacht oben','Wspmax Schacht oben Zeitpunkt','Wspmax Schacht unten','Wspmax Schacht Zeitpunkt']
+#df_res1dLink=['Haltungstyp','Schacht oben','Sohlhöhe_Schacht oben',
+                # 'Deckenhöhe_Schacht oben','Schacht unten','Sohlhöhe_Schacht unten',
+                # 'Deckenhöhe_Schacht unten','Durchmesser [m]','Länge [m]','Gefälle [%]',
+                # 'Vmin [m/s]','Vmin_Zeitpunkt','Vmax [m/s]','Vmax_Zeitpunkt','Qmin [m/s]',
+                # 'Qmin_Zeitpunkt','Qmax [m/s]','Qmax_Zeitpunkt','Qvoll [m³/s]','Qmax/Qvoll [%]',
+                # 'Wspmax Schacht oben','Wspmax Schacht oben Zeitpunkt','Wspmax Schacht unten','Wspmax Schacht Zeitpunkt']
 
 
-# In[19]:
+# In[24]:
 
 
 #print filename
 print(res1d.file_path)
 
 #visualize first 5 rows of dataframe
-df.head()
+df_res1dLink.head()
 
 
 # ---
 
-# In[21]:
+# In[25]:
 
 
-df.shape
+# Behalte nur die Zeilen, in denen Haltungstyp = 'Link' ist
 
+#df_res1dLink = df_res1dLink.loc[df['Reach_Type'] == 'Link']
 
-# In[22]:
-
-
-# Behalte nur die Zeilen, in denen Reach_Type = 'Link' ist
-# TODO Überlgen, wie wir mit den Knotentypen und Haltungstypen umgehen; durch den Join am Ende wird
-# scheinbar ohnehin alles bereinigt.
-# ASFA ändern auf Reach_Type
-df_res1dLink = df.loc[df['Haltungstyp'] == 'Link']
-
-# ASFA: index auf Link_ID
 # set index on Link_ID:
-df_res1dLink =  df_res1dLink.set_index('Haltungs-Nr.')
+df_res1dLink =  df_res1dLink.set_index('Link_ID')
 
 df_res1dLink
 
 
 # # Join Node results with msm_Node
 
-# In[23]:
+# In[26]:
+
+
+print('Joining results with msm_Node information...')
+
+
+# In[27]:
 
 
 # establish connection to MIKE+ database:
 con = sqlite3.connect(oneSQLiteFile)
 
 
-# In[24]:
+# In[28]:
 
 
 # pick two columns from 'msm_Link':
 df_msmNode = pd.read_sql_query("SELECT muid, description, assetname from msm_Node", con)
 
 
-# In[25]:
+# In[29]:
 
 
 # set index on 'muid'
 df_msmNode = df_msmNode.set_index('muid')
 
 
-# In[26]:
+# In[30]:
 
 
 df_msmNode.head()
 
 
-# In[27]:
+# In[31]:
 
 
 # join...werden dadurch die fälschlichen Knoten der Wehre entfernt?
@@ -574,34 +599,40 @@ df_res1dmsmNode
 
 # # Join Link results with msmLink
 
-# In[28]:
+# In[32]:
+
+
+print('Joining Link results with msm_Link information...')
+
+
+# In[33]:
 
 
 # establish connection to MIKE+ database:
 con = sqlite3.connect(oneSQLiteFile)
 
 
-# In[29]:
+# In[34]:
 
 
 # pick two columns from 'msm_Link':
 df_msmLink = pd.read_sql_query("SELECT muid, description, assetname from msm_Link", con)
 
 
-# In[30]:
+# In[35]:
 
 
 # set index on 'muid'
 df_msmLink = df_msmLink.set_index('muid')
 
 
-# In[31]:
+# In[36]:
 
 
 df_msmLink.head()
 
 
-# In[32]:
+# In[37]:
 
 
 df_res1dmsmLink = pd.merge(df_res1dLink, df_msmLink, left_index=True, right_index=True)
@@ -611,12 +642,16 @@ df_res1dmsmLink
 
 # # define output res1d-report format (*.csv | *.xlsx)
 
+# In[38]:
+
+
+print('Preparing your output...')
+
+
 # ---
 
-# In[33]:
+# In[39]:
 
-
-# ASFA: testen mit Manz...was ist beim Excel schiefgegangen?
 
 # extract the root of the filename even if filename contains a dot, hence better than split('.')
 rootName = os.path.splitext(oneRes1dFile)[0]
@@ -627,7 +662,13 @@ df_res1dmsmNode.to_csv(rootName + '_Knoten.csv', index_label='MUID',header=['Min
 print(rootName + '_Knoten.csv exportiert')
 
 # export LINK result table to csv
-df_res1dmsmLink.to_csv(rootName + '_Haltungen.csv', index_label='MUID')
+# root name .... columns= engl. column names s. oben in reihenfolge excel und dann header umstellen 
+df_res1dmsmLink.to_csv(rootName + '_Haltungen.csv', index_label='MUID', header=['Haltungstyp','Schacht oben','Sohlhöhe_Schacht oben',
+                'Deckenhöhe_Schacht oben','Schacht unten','Sohlhöhe_Schacht unten',
+                'Deckenhöhe_Schacht unten','Durchmesser [m]','Länge [m]','Gefälle [%]',
+                'Vmin [m/s]','Vmin_Zeitpunkt','Vmax [m/s]','Vmax_Zeitpunkt','Qmin [m/s]',
+                'Qmin_Zeitpunkt','Qmax [m/s]','Qmax_Zeitpunkt','Qvoll [m³/s]','Qmax/Qvoll [%]',
+                'Wspmax Schacht oben','Wspmax Schacht oben Zeitpunkt','Wspmax Schacht unten','Wspmax Schacht Zeitpunkt','Beschreibung', 'AssetName'])
 
 print(rootName + '_Haltungen.csv exportiert')
 
@@ -635,15 +676,21 @@ print(rootName + '_Haltungen.csv exportiert')
 #df.to_excel(res1d.file_path.split('.')[0]+'.xlsx',index=False, sheet_name='res1d_network_properties',float_format = "%0.3f")
 
 
-# In[34]:
+# In[40]:
 
 
 # os.system("pause")
 
 
-# In[35]:
+# In[41]:
 
 
 # Eingabe abwarten, um Kosole zu schließen
 input('Zum Beenden ENTER druecken')
+
+
+# In[ ]:
+
+
+
 
